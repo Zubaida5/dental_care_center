@@ -1,4 +1,10 @@
 const swaggerJsDoc = require('swagger-jsdoc');
+const {
+  Service,
+  createService,
+  updateService,
+} = require('./routes/serviceSwagger');
+const { Reviw, createReviw, updateReviw } = require('./routes/reviwSwagger');
 const { signUp } = require('./routes/auth');
 const { User, updateMe, createUser } = require('./routes/users');
 const {
@@ -27,6 +33,12 @@ const options = {
     ],
     components: {
       schemas: {
+        Service,
+        createService,
+        updateService,
+        Reviw,
+        createReviw,
+        updateReviw,
         signUp,
         createUser,
         updateMe,

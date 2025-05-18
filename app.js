@@ -74,10 +74,14 @@ app.use(
 //ضغط البيانات قبل ارسالها من اجل تسريع النقل
 app.use(compression());
 //R <dont remove this line>
+const serviceRouter = require('./routes/serviceRoutes');
+const reviwRouter = require('./routes/reviwRoutes');
 const userRouter = require('./routes/userRoutes');
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 //ROUTES <dont remove this line>
+app.use('/api/v1.0.0/services', serviceRouter);
+app.use('/api/v1.0.0/reviws', reviwRouter);
 app.use('/api/v1.0.0/users', userRouter);
 //في حال طلب مورد غير موجود
 app.all('*', (req, res, next) => {

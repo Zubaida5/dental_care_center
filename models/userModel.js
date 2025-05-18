@@ -1,11 +1,17 @@
+const Reviw = require('./reviwModel');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { RoleCode } = require('../utils/enum');
+const { RoleCode, SpecializeEnum } = require('../utils/enum');
 const userSchema = new mongoose.Schema(
   {
     // <creating-property-schema />
+    phone: {
+      type: String,
+      required: [true, 'Please enter name  phone'],
+      unique: true,
+    },
     name: {
       type: String,
       required: [true, 'Please tell us your name!'],
@@ -33,6 +39,10 @@ const userSchema = new mongoose.Schema(
       minlength: 8,
       select: false,
     },
+    specialize: {
+      type: String,
+      enum: Object.values(SpecializeEnum),
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -48,6 +58,16 @@ const userSchema = new mongoose.Schema(
   { versionKey: false },
 );
 // <creating-function-schema />
+userSchema.post('findOneAndDelete', async function (doc) {
+  if (doc) {
+    try {
+      await Reviw.deleteMany({ userId: doc._id });
+    } catch (error) {
+      return next(new AppError('error deleting reviwss', 500));
+    }
+  }
+});
+
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();

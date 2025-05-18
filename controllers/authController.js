@@ -31,10 +31,12 @@ exports.signup = catchAsync(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-  //  property signup
+    //  property signup
+
+    phone: req.body.phone,
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
-  await new Email(newUser, url).welcomeMailerSend();
+  // await new Email(newUser, url).welcomeMailerSend();
   // .catch(async (er) => {
   //   await User.deleteOne({ id: newUser.id });
   // });

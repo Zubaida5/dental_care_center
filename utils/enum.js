@@ -4,8 +4,14 @@ exports.UserStatus = {
 };
 exports.RoleCode = {
   USER: 'USER',
+  DOCTOR: 'DOCTOR',
   ADMIN: 'ADMIN',
 };
+exports.SpecializeEnum = {
+  GNRAL: 'GNRAL',
+  ADMIN: 'ADMIN',
+};
+
 exports.Env = {
   production: 'production',
   development: 'development',

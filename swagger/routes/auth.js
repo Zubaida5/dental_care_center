@@ -236,18 +236,26 @@ exports.signUp = {
   type: 'object',
   required: [
     // required property
+
+    'phone',
+
     'name',
     'email',
     'password',
   ],
   properties: {
     //  property signup
+
+    phone: { type: 'string' },
     name: { type: 'string' },
     email: { type: 'string' },
     password: { type: 'string' },
   },
   example: {
     // create property example
+
+    phone: '0967676767',
+
     name: 'Adel Seirafi',
     email: 'user@gmail.com',
     password: '123454321',
