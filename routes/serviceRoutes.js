@@ -11,7 +11,7 @@ router
   .post(restrictTo(ADMIN), serviceController.createService);
 router
   .route('/:id')
-  .get(restrictTo(USER), serviceController.getService)
+  .get(restrictTo(USER, ADMIN), serviceController.getService)
   .patch(restrictTo(ADMIN), serviceController.updateService)
   .delete(restrictTo(ADMIN), serviceController.deleteService);
 module.exports = router;

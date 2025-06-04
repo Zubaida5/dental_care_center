@@ -24,7 +24,7 @@ const reviwSchema = new mongoose.Schema(
 reviwSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'userId',
-    select: 'name -_id',
+    select: 'name photo -_id',
   });
   next();
 });

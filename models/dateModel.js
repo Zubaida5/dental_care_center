@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { SpecializeEnum } = require('../utils/enum');
 const dateSchema = new mongoose.Schema(
   {
     canceled: {
@@ -10,7 +11,14 @@ const dateSchema = new mongoose.Schema(
       required: [true, 'must enter date'],
       type: Date,
     },
-
+    service: {
+      required: [true, 'must enter service'],
+      type: mongoose.Schema.ObjectId,
+      ref: 'Service',
+    },
+    diagnosis: {
+      type: String,
+    },
     day: {
       required: [true, 'must enter day'],
       anum: [
@@ -46,7 +54,7 @@ const dateSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 const Dates = mongoose.model('Dates', dateSchema);
 module.exports = Dates;

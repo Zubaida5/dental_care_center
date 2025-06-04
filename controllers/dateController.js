@@ -7,7 +7,7 @@ const catchAsync = require('../utils/catchAsync');
 const { dateClass } = require('../class/dateClass');
 exports.getdate = handlerFactory.getOne(Dates);
 exports.createdate = catchAsync(async (req, res, next) => {
-  req.body.pataint=req.user._id
+  req.body.pataint = req.user._id;
   const doc = await Dates.create(req.body);
   res.status(201).json({
     status: 'succsess',
@@ -18,10 +18,15 @@ exports.createdate = catchAsync(async (req, res, next) => {
 exports.updatedate = handlerFactory.updateOne(Dates);
 exports.deletedate = handlerFactory.deleteOne(Dates);
 exports.getDateDoctor = catchAsync(async (req, res, next) => {
-  const doc = await Dates.find({
-    date: { $gte: Date.now() },
-    doctor: req.user._id,
-  });
+  const doc = await Dates.find(
+    {
+      date: { $gte: Date.now() },
+      doctor: req.user._id,
+    },
+    { doctor: 0 },
+  )
+    .populate({ path: 'pataint', select: 'name photo -_id' })
+    .populate({ path: 'service', select: 'name -_id' });
   // SEND RESPONSE
   res.status(200).json({
     status: 'success',
@@ -31,21 +36,21 @@ exports.getDateDoctor = catchAsync(async (req, res, next) => {
 });
 exports.getAlldate = handlerFactory.getAllpop1(
   Dates,
-  { path: 'doctor', select: '-_id first_name last_name' },
-  { path: 'pataint', select: '-_id -adderss -photo -insurance' }
+  { path: 'doctor', select: 'name photo -_id' },
+  { path: 'service', select: 'name -_id' },
 );
 exports.available = catchAsync(async (req, res, next) => {
   const doctor = await User.findById(req.params.id);
   const alldate = await Dates.find({
     canceled: false,
     date: { $gte: Date.now() },
-    doctor:req.params.id
+    doctor: req.params.id,
   });
   const dateMain = doctor.date;
   if (!doctor) {
     return new AppError('doctor is not found with ID', 400);
   }
-  const freeDate = dateFree(dateMain, alldate,30);
+  const freeDate = dateFree(dateMain, alldate, 30);
   res.status(200).json({
     status: 'success',
     count: freeDate.length,
@@ -69,7 +74,7 @@ const dateFree = (all, take, duration) => {
             newDate.getDate(),
             element.first + Math.trunc((i * duration) / 60),
             (i * duration) % 60,
-            0
+            0,
           );
           for (let i = 0; i < take.length; i++)
             if (setDate.toString() == take[i].date.toString()) {
@@ -91,8 +96,8 @@ const dateFree = (all, take, duration) => {
               setDate,
               element.day,
               element.first + Math.trunc((i * duration) / 60),
-              (i * duration) % 60
-            )
+              (i * duration) % 60,
+            ),
           );
         }
     }
