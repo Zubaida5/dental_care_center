@@ -24,6 +24,31 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
     },
+    date: [
+      {
+        first: {
+          required: [true, 'must enter first time'],
+          type: Number,
+        },
+        last: {
+          required: [true, 'must enter last time'],
+          type: Number,
+        },
+        day: {
+          required: [true, 'must enter day'],
+          anum: [
+            'sunday',
+            'monday',
+            '  ',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+          ],
+          type: String,
+        },
+      },
+    ],
     photo: {
       type: String,
       default: 'default.jpg',
